@@ -1,40 +1,46 @@
 ﻿using PayTroco.Core.DataContracts;
 using System.Collections.Generic;
 using System;
+using PayTroco.Core.Processors;
+using System.Linq;
 
 namespace PayTroco.Core {
     public class PayTrocoManager
     {
-        int[] coins = { 100, 50, 25, 10, 5, 1 };
-
-        List<Currency> currencyCollection;
+        List<AbstractProcessor> processorsCollection;
 
         public PayTrocoManager() {
-            currencyCollection = new List<Currency>();
+            processorsCollection = new List<AbstractProcessor>();
+            processorsCollection.Add(new BillProcessor());
+            processorsCollection.Add(new CoinProcessor());
         }
 
         public CalculateChangeResponse CalculateChange(CalculateChangeRequest request)
         {
             CalculateChangeResponse response = new CalculateChangeResponse();
-
+            
             // Verifica se os dados recebidos são válidos.
             if (request.IsValid == false) {
                 response.OperationReport = request.ValidationReport;
                 return response;
             }
 
-            response.Change = new Change();
-            response.Change.ChangeAmount = request.InsertedAmountInCents - request.ProductAmountInCents;
+            response.ChangeAmount = request.InsertedAmountInCents - request.ProductAmountInCents;
 
-            int restChange = response.Change.ChangeAmount.Value;
+            processorsCollection = processorsCollection.OrderByDescending(x => x.GetAvailableValues().Min()).ToList();
 
-            foreach (int coin in coins) {
-                if (restChange > 0) {
-                    if (restChange / coin > 0) {
-                        response.Change.ChangeDictionary.Add(coin, restChange / coin);
-                        restChange = restChange % coin;
-                    } 
-                }
+            int restChange = response.ChangeAmount.Value;
+            ProcessorResult processorResult;
+
+            List<Currency> currencyCollection = new List<Currency>();
+
+            foreach (AbstractProcessor processor in processorsCollection) {
+                processorResult = processor.Process(restChange);
+                restChange = processorResult.RestChangeInCents;
+                Currency currency = new Currency();
+                currency.Name = processor.GetName();
+                currency.CurrencyDictionary = processorResult.ResultDictionary;
+                currencyCollection.Add(currency);
             }
 
             response.Success = true;

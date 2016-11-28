@@ -15,7 +15,7 @@ namespace PayTroco.Core.DataContracts {
         /// <summary>
         /// Obtém a flag que indica se os dados recebidos são válidos.
         /// </summary>
-        public bool IsValid {
+        internal bool IsValid {
             get {
                 this.ValidationReport.Clear();
                 this.Validate();
@@ -23,9 +23,9 @@ namespace PayTroco.Core.DataContracts {
             }
         }
 
-        public List<Report> ValidationReport { get; set; }
+        internal List<Report> ValidationReport { get; set; }
 
-        public void AddError(string field, string message) {
+        protected void AddError(string field, string message) {
 
             string fullPropertyName = this.GetType().Name + "." + field;
 
@@ -33,6 +33,6 @@ namespace PayTroco.Core.DataContracts {
             this.ValidationReport.Add(report);
         }
 
-        public abstract void Validate();
+        protected abstract void Validate();
     }
 }

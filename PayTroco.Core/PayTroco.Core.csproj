@@ -40,14 +40,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Change.cs" />
-    <Compile Include="Currency.cs" />
+    <Compile Include="DataContracts\Currency.cs" />
     <Compile Include="DataContracts\AbstractRequest.cs" />
     <Compile Include="DataContracts\AbstractResponse.cs" />
     <Compile Include="DataContracts\CalculateChangeResponse.cs" />
     <Compile Include="DataContracts\CalculateChangeRequest.cs" />
     <Compile Include="DataContracts\Report.cs" />
     <Compile Include="PayTrocoManager.cs" />
+    <Compile Include="Processors\BillProcessor.cs" />
+    <Compile Include="Processors\CoinProcessor.cs" />
+    <Compile Include="Processors\AbstractProcessor.cs" />
+    <Compile Include="Processors\ProcessorResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

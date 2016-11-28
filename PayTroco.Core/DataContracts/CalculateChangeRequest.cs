@@ -12,7 +12,7 @@ namespace PayTroco.Core.DataContracts {
         public int ProductAmountInCents { get; set; }
         public int InsertedAmountInCents { get; set; }
 
-        public override void Validate() {
+        protected override void Validate() {
 
             if (this.ProductAmountInCents < 0) {
                 this.AddError("ProductAmountInCents", "ProductAmountInCents cannot be lower than zero");
