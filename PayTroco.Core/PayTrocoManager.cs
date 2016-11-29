@@ -5,36 +5,34 @@ using PayTroco.Core.Processors;
 using System.Linq;
 
 namespace PayTroco.Core {
-    public class PayTrocoManager
-    {
-        List<AbstractProcessor> processorsCollection;
+    public class PayTrocoManager {
 
         public PayTrocoManager() {
-            processorsCollection = new List<AbstractProcessor>();
-            processorsCollection.Add(new BillProcessor());
-            processorsCollection.Add(new CoinProcessor());
+
         }
 
-        public CalculateChangeResponse CalculateChange(CalculateChangeRequest request)
-        {
+        public CalculateChangeResponse CalculateChange(CalculateChangeRequest request) {
             CalculateChangeResponse response = new CalculateChangeResponse();
-            
+
             // Verifica se os dados recebidos são válidos.
             if (request.IsValid == false) {
                 response.OperationReport = request.ValidationReport;
                 return response;
             }
 
-            response.ChangeAmount = request.InsertedAmountInCents - request.ProductAmountInCents;
+            int changeAmount = request.InsertedAmountInCents - request.ProductAmountInCents;
 
-            processorsCollection = processorsCollection.OrderByDescending(x => x.GetAvailableValues().Min()).ToList();
-
-            int restChange = response.ChangeAmount.Value;
+            int restChange = changeAmount;
             ProcessorResult processorResult;
 
             List<Currency> currencyCollection = new List<Currency>();
-
-            foreach (AbstractProcessor processor in processorsCollection) {
+            AbstractProcessor processor;
+            while (restChange > 0) {
+                processor = ProcessorFactory.Create(restChange);
+                if (processor == null) {
+                    response.OperationReport.Add(new Report("", "It was not possible to process your request."));
+                    return response;
+                }
                 processorResult = processor.Process(restChange);
                 restChange = processorResult.RestChangeInCents;
                 Currency currency = new Currency();
@@ -43,6 +41,8 @@ namespace PayTroco.Core {
                 currencyCollection.Add(currency);
             }
 
+            response.ChangeAmount = changeAmount;
+            response.CurrencyCollection = currencyCollection;
             response.Success = true;
             return response;
         }

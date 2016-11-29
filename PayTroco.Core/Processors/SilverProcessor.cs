@@ -5,22 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PayTroco.Core.Processors {
-    internal class CoinProcessor : AbstractProcessor{
+    internal class SilverProcessor : AbstractProcessor {
 
-        public CoinProcessor() {
+        public SilverProcessor() {
 
         }
 
         internal override int[] GetAvailableValues() {
-            int[] coins = { 100, 50, 25, 10, 5 };
-            return coins;
+
+            int[] values = { 100000, 50000 };
+            return values;
+      
         }
 
         internal override string GetName() {
-
-            string name = "Coin";
-
+            string name = "Silver";
             return name;
         }
     }
+
 }

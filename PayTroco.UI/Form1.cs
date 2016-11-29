@@ -27,7 +27,7 @@ namespace PayTroco.UI {
         }
 
         private void UxBtnPay_Click(object sender, EventArgs e) {
-            this.UxTxtChangeAmountInCoins.Text = "";
+            this.UxTxtChangeAmount.Text = "";
             this.UxTxtChangeAmountTotal.Text = "";
 
             PayTrocoManager payTrocoManager = new PayTrocoManager();
@@ -41,7 +41,7 @@ namespace PayTroco.UI {
 
             CalculateChangeResponse changeResponse = payTrocoManager.CalculateChange(calculateChangeRequest);
 
-            string changeInCoins = "";
+            string change = "";
 
             if (changeResponse.Success == false) {
                 string outputReport = "";
@@ -50,16 +50,18 @@ namespace PayTroco.UI {
                     outputReport += report.ToString();
                 }
 
-                this.UxTxtChangeAmountInCoins.Text = outputReport;
+                this.UxTxtChangeAmount.Text = outputReport;
                 return;
             }
 
-            foreach (KeyValuePair<int, int> kvPair in changeResponse.Change.ChangeDictionary) {
-                changeInCoins += kvPair.Value + " moeda(s) de " + kvPair.Key + "\r\n";
+            foreach (Currency currency in changeResponse.CurrencyCollection) {
+                foreach (KeyValuePair<int,int>kvPair in currency.CurrencyDictionary) {
+                    change += kvPair.Value + " " + currency.Name + " of " + kvPair.Key + "\r\n";
+                }
             }
 
-            this.UxTxtChangeAmountInCoins.Text = changeInCoins;
-            this.UxTxtChangeAmountTotal.Text = changeResponse.Change.ChangeAmount.ToString();
+            this.UxTxtChangeAmount.Text = change;
+            this.UxTxtChangeAmountTotal.Text = changeResponse.ChangeAmount.ToString();
         }
     }
 }
