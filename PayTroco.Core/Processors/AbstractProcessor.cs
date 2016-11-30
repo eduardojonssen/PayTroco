@@ -14,8 +14,8 @@ namespace PayTroco.Core.Processors {
         internal abstract int[] GetAvailableValues();
 
         internal abstract string GetName();
-
-        internal ProcessorResult Process (int changeAmount) {
+        
+        internal virtual ProcessorResult Process (int changeAmount) {
 
             ProcessorResult processorResult = new ProcessorResult();
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace PayTroco.Core.DataContracts {
     public class CalculateChangeRequest : AbstractRequest {
 
-        public CalculateChangeRequest() : base() { }
+        public CalculateChangeRequest() : base() {  }
 
         public int ProductAmountInCents { get; set; }
         public int InsertedAmountInCents { get; set; }

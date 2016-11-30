@@ -15,6 +15,9 @@ namespace PayTroco.Core.Processors {
             processorsCollection.Add(new CoinProcessor());
             processorsCollection.Add(new CandyProcessor());
             processorsCollection.Add(new SilverProcessor());
+            processorsCollection.Add(new GoldProcessor());
+
+            //Adicionar novos processadores acima desta linha
         }
         internal static AbstractProcessor Create(int changeAmount) {
             
