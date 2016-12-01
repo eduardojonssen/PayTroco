@@ -16,7 +16,7 @@ namespace PayTroco.Core {
         public CalculateChangeResponse CalculateChange(CalculateChangeRequest request) {
 
             string requestJSON = Serializer.NewtonsoftSerialize(request);
-            LoggerManager.Log(requestJSON, "CalculateChange", "Request", "Info");
+            LoggerManager.Log(request);
 
             CalculateChangeResponse response = new CalculateChangeResponse();
             try {
@@ -54,11 +54,9 @@ namespace PayTroco.Core {
             }
             catch (Exception e) {
                 response.OperationReport.Add(new Report("", "Ops! Something went wrong."));
-                string exceptionJSON = Serializer.NewtonsoftSerialize(e);
-                LoggerManager.Log(exceptionJSON, "CalculateChange", "Exception", "Error");
+                LoggerManager.Log(e);
             } finally {
-                string responseJSON = Serializer.NewtonsoftSerialize(response);
-                LoggerManager.Log(responseJSON, "CalculateChange", "Response", "Info");
+                LoggerManager.Log(response);
             }
 
             return response;

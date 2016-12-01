@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Dlp.Framework;
+using PayTroco.Core.DataContracts;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,23 +12,29 @@ using System.Threading.Tasks;
 namespace PayTroco.Core.Logger {
     public static class LoggerManager {
 
-        static string path = @"C:\Logs\";
-        static string filename = @"PayTroco.log";
-        
-        /// Summary 
-        /// Este método irá criar logs da aplicação.
-        /// Variáveis de entrada:
-        ///     - message: mensagem de log
-        ///     - method: método que chama o log
-        ///     - type: response, request ou exception
-        ///     - category: info, error, debug, warning, panic
-        internal static void Log(string message, string method, string type, string category = "Info") {
-            Directory.CreateDirectory(path);
-            using (StreamWriter stream = new StreamWriter(path + filename, true)) {
-                message = DateTime.Now + "||" + method + "||" + category + "||" + type + "||" + message;
-                stream.WriteLine(message);
+        public static void Log (object logData, [CallerMemberName]string methodName = null) {
+            string logDataJSON = Serializer.NewtonsoftSerialize(logData);
+            string type;
+            string category = "Info";
+
+            if (logData is AbstractRequest)
+                type = "Request";
+            else if (logData is AbstractResponse)
+                type = "Response";
+            else if (logData is Exception) {
+                type = "Exception";
+                category = "Error";
             }
+            else
+                type = "Others";
+
+            EventViewerLogger eventViewerLogger = new EventViewerLogger();
+            eventViewerLogger.Log(logDataJSON, methodName, type, category);
+
+            FileLogger fileLogger = new FileLogger();
+            fileLogger.Log(logDataJSON, methodName, type, category);
         }
+
 
     }
 }

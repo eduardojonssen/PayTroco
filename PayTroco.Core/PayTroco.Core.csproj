@@ -39,6 +39,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -54,6 +55,9 @@
     <Compile Include="DataContracts\CalculateChangeResponse.cs" />
     <Compile Include="DataContracts\CalculateChangeRequest.cs" />
     <Compile Include="DataContracts\Report.cs" />
+    <Compile Include="Logger\AbstractLogger.cs" />
+    <Compile Include="Logger\EventViewerLogger.cs" />
+    <Compile Include="Logger\FileLogger.cs" />
     <Compile Include="Logger\LoggerManager.cs" />
     <Compile Include="PayTrocoManager.cs" />
     <Compile Include="Processors\BillProcessor.cs" />

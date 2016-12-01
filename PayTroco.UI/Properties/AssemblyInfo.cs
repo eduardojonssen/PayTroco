@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("PayTroco")]
-[assembly: AssemblyDescription("Clarissa Tuxen, Tiago Brandão, Matheus Rabelo, Guido Percú, Aldo Gonçalves, Leonardo Lopes, Paula Grangeiro, Darlan Caldas, Caique Oliveira, Alice Souto, Bruno Vita")]
+[assembly: AssemblyDescription("Clarissa Tuxen, Tiago Brandão, Matheus Rabelo, Guido Percú, Aldo Gonçalves, Leonardo Lopes, Paula Grangeiro, Darlan Caldas, Caique Oliveira, Alice Souto, Bruno Vita, Eryk Humberto")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Pay4")]
 [assembly: AssemblyProduct("PayTroco")]
